@@ -26,4 +26,6 @@ app.get('/dockercompose', (req, res)=>{
         message: "This is docker compose used to reduce build and run command for docker and allow multi containor connction for data sharing and other purpose."
     })
 })
+
+//now we have created pipline for asw ec2 instance docker
 app.listen(4000, ()=> console.log('Port is running on http://localhost:4000'))
