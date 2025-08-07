@@ -15,7 +15,7 @@ pipeline{
 
         stage("Build docker image"){
             steps{
-                '''
+                sh '''
                 docker build -t $IMAGE_NAME .
                 '''
             }
@@ -24,7 +24,7 @@ pipeline{
         stage("Stop old container"){
             // || true represent that Try to stop the container If it doesnt exist or throws an error Ignore the error and continue the pipeline
             steps{
-                '''
+                sh '''
                 docker stop $CONTAINER_NAME || true
                 docker rm $CONTAINER_NAME || true
                 '''
@@ -34,7 +34,7 @@ pipeline{
         // --restart always=>  You want the app to stay running even if EC2 reboots You want to avoid manual container restart after crash or power-off You treat your container like a persistent service
         stage("Run docker container"){
             steps{
-                '''
+                sh '''
                 docker run -d --name $CONTAINER_NAME -p 4000:4000 --restart always $IMAGE_NAME
                 '''
             }
