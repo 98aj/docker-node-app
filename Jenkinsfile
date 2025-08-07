@@ -13,6 +13,14 @@ pipeline{
             }
         }
 
+        stage("Removing old image"){
+            steps{
+                sh '''
+                docker rmi $IMAGE_NAME
+                '''
+            }
+        }
+
         stage("Build docker image"){
             steps{
                 sh '''
