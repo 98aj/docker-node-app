@@ -13,10 +13,20 @@ pipeline{
             }
         }
 
+        stage("Stop old container"){
+            // || true represent that Try to stop the container If it doesnt exist or throws an error Ignore the error and continue the pipeline
+            steps{
+                sh '''
+                docker stop $CONTAINER_NAME || true
+                docker rm $CONTAINER_NAME || true
+                '''
+            }
+        }
+
         stage("Removing old image"){
             steps{
                 sh '''
-                docker rmi $IMAGE_NAME
+                docker rmi $IMAGE_NAME || true
                 '''
             }
         }
@@ -28,17 +38,7 @@ pipeline{
                 '''
             }
         }
-
-        stage("Stop old container"){
-            // || true represent that Try to stop the container If it doesnt exist or throws an error Ignore the error and continue the pipeline
-            steps{
-                sh '''
-                docker stop $CONTAINER_NAME || true
-                docker rm $CONTAINER_NAME || true
-                '''
-            }
-        }
-
+        
         // --restart always=>  You want the app to stay running even if EC2 reboots You want to avoid manual container restart after crash or power-off You treat your container like a persistent service
         stage("Run docker container"){
             steps{
