@@ -27,5 +27,5 @@ app.get('/dockercompose', (req, res)=>{
     })
 })
 
-//now we have created pipline for asw ec2 instance docker
+//now we have created pipline for asw ec2 instance docker k
 app.listen(4000, ()=> console.log('Port is running on http://localhost:4000'))
