@@ -5,7 +5,7 @@ let app = express()
 
 app.get('/', (req, res)=>{
     res.status(200).send({
-        message: 'Hello to Node js server'
+        message: 'Hello to Node js server abhishek'
     })
 })
 
@@ -14,6 +14,23 @@ app.get('/docker', (req, res)=>{
         message: 'This is docker route running in background on port 4000(your host/local outside):4000(docker container inside) '
     })
 })
+// -v "$(pwd)":/app
+
+// Bind mount the current directory on your host ($(pwd) = "print working directory") into /app inside the container.
+
+// Means: the files you have locally will instantly appear inside the container.
+
+// Good for development, so changes to code don’t require rebuilding the image.
+
+// -v /app/node_modules
+
+// This is a volume mount without a host path — it creates an anonymous volume for /app/node_modules inside the container.
+
+// Why?
+
+// If you mount your whole project folder (-v "$(pwd)":/app), it would overwrite the container’s /app/node_modules folder with your local one (which might be empty or incompatible).
+
+// This trick ensures container’s node_modules stays intact even when you override /app with your local code.
 
 app.get('/abhi', (req, res)=>{
     res.status(200).send({
