@@ -5,11 +5,11 @@ let app = express()
 app.use(express.json());
 
 const pool = new Pool({
-    user:'root',
-    password:'root',
-    database:'mydatabase',
-    host:'mypostgres',
-    port:'5432'
+    user: process.env.DATABASE_USER,
+    password:process.env.DATABASE_PASSWORD,
+    database:process.env.DATABASE_NAME,
+    host:process.env.DATABASE_HOST,
+    port:process.env.DATABASE_PORT
 })
 
 
