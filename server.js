@@ -1,6 +1,16 @@
 const express = require('express')
+const {Pool} = require('pg')
 
 let app = express()
+app.use(express.json());
+
+const pool = new Pool({
+    user:'root',
+    password:'root',
+    database:'mydatabase',
+    host:'mypostgres',
+    port:'5432'
+})
 
 
 app.get('/', (req, res)=>{
@@ -43,6 +53,31 @@ app.get('/dockercompose', (req, res)=>{
         message: "This is docker compose used to reduce build and run command for docker and allow multi containor connction for data sharing and other purpose."
     })
 })
+
+app.post('/add-user', async (req, res) => {
+    const { name, age } = req.body;
+    try {
+        const result = await pool.query(
+            'INSERT INTO users (name, age) VALUES ($1, $2) RETURNING *',
+            [name, age]
+        );
+        res.json(result.rows[0]);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Database error' });
+    }
+});
+
+// adding volume to psql  docker run -d --name mypostgres -e POSTGRES_USER=root -e POSTGRES_PASSWORD=root -e POSTGRES_DB=mydatabase --network myNetwork -v myVolume:/var/lib/postgresql/data postgres:16-alpine
+app.get('/users', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM users');
+        res.json(result.rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Database error' });
+    }
+});
 
 //now we have created pipline for asw ec2 instance docker k abhi
 app.listen(4000, ()=> console.log('Port is running on http://localhost:4000'))
