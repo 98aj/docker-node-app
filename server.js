@@ -1,5 +1,6 @@
 const express = require('express')
 const {Pool} = require('pg')
+const os = require('os');
 
 let app = express()
 app.use(express.json());
@@ -15,7 +16,8 @@ const pool = new Pool({
 
 app.get('/', (req, res)=>{
     res.status(200).send({
-        message: 'Hello to Node js server abhishek'
+        message: 'Hello to Node js server abhishek',
+        container: os.hostname()
     })
 })
 
